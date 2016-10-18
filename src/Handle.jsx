@@ -1,5 +1,22 @@
 import React from 'react';
-import Tooltip from 'rc-tooltip';
+
+class ToolTipComponent extends React.Component {
+  constructor(props) {
+    super(props)
+  };
+
+  render() {
+    if (this.props.touched)
+      {
+        return (
+          <output className="my-tooltip" style={{opacity:0.9}}>{this.props.value} {this.props.unit}</output>
+        )
+      }
+    return (
+        <output className="my-tooltip" style={{opacity:0}}>{this.props.value} {this.props.unit}</output>
+    )
+  }
+}
 
 export default class Handle extends React.Component {
   constructor(props) {
@@ -24,56 +41,37 @@ export default class Handle extends React.Component {
 
   render() {
     const {
-      prefixCls,
-      tooltipPrefixCls,
       className,
       tipTransitionName,
-      tipFormatter,
       vertical,
       offset,
       value,
-      dragging,
-      noTip,
+      unit,
+      toolTipShow,
     } = this.props;
 
     const style = vertical ? { bottom: `${offset}%` } : { left: `${offset}%` };
-    const handle = (
+    return (
       <div className={className} style={style}
         onMouseUp={this.showTooltip.bind(this)}
         onMouseEnter={this.showTooltip.bind(this)}
         onMouseLeave={this.hideTooltip.bind(this)}
-      />
-    );
-
-    if (noTip) {
-      return handle;
-    }
-
-    const isTooltipVisible = dragging || this.state.isTooltipVisible;
-    return (
-      <Tooltip
-        prefixCls={tooltipPrefixCls || `${prefixCls}-tooltip`}
-        placement="top"
-        visible={isTooltipVisible}
-        overlay={<span>{tipFormatter(value)}</span>}
-        delay={0}
-        transitionName={tipTransitionName}
       >
-        {handle}
-      </Tooltip>
+        <ToolTipComponent
+          value={this.props.value}
+          unit={this.props.unit}
+          touched={this.props.toolTipShow}/>
+      </div>
     );
   }
 }
 
 Handle.propTypes = {
-  prefixCls: React.PropTypes.string,
-  tooltipPrefixCls: React.PropTypes.string,
   className: React.PropTypes.string,
   vertical: React.PropTypes.bool,
   offset: React.PropTypes.number,
   tipTransitionName: React.PropTypes.string,
-  tipFormatter: React.PropTypes.func,
   value: React.PropTypes.number,
-  dragging: React.PropTypes.bool,
-  noTip: React.PropTypes.bool,
+  unit: React.PropTypes.string,
+  toolTipShow: React.PropTypes.bool
 };
