@@ -453,6 +453,7 @@ class Slider extends React.Component {
         max, min,
         tipTransitionName,
         tipFormatter,
+        unit,
         children,
     } = this.props;
 
@@ -478,6 +479,8 @@ class Slider extends React.Component {
       tipTransitionName,
       tipFormatter,
       vertical,
+      unit: this.props.unit,
+      toolTipShow: this.props.toolTipShow
     };
 
     const handles = bounds.map((v, i) => cloneElement(customHandle, {
